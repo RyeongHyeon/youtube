@@ -741,3 +741,22 @@ http gateway:8080/videoServices
 http gateway:8080/channelSystems
 http gateway:8080/policyManagements
 ```
+
+```
+### 고객이 광고를 등록하면 동영상에 맵핑된다
+http http://localhost:8083/videoServices videoId=1 clientId=1 channelId=1 viewCount=0
+http http://localhost:8083/videoServices videoId=2 clientId=1 channelId=1 viewCount=0
+http http://localhost:8083/videoServices videoId=3 clientId=1 channelId=1 viewCount=0
+http http://localhost:8085/advertisingSystems adId=1 adName="ad111" adMinute=3 adCnt=10
+http http://localhost:8085/advertisingSystems adId=2 adName="ad222" adMinute=3 adCnt=20
+
+
+### 고객이 동영상을 조회(수정)하면 맵핑된 광고의 횟수를 차감한다
+http PATCH http://localhost:8083/videoServices/1 viewCount=5
+http http://localhost:8083/videoServices
+http http://localhost:8085/advertisingSystems
+
+
+### gateway 확인
+http gateway:8080/videoServices
+```
